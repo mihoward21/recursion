@@ -28,11 +28,13 @@ var stringifyJSON = function(obj) {
     converted += '{';
 	var chop = false;
 	for(var key in obj) {
-	  converted += stringifyJSON(key);
-	  converted += ':';
-	  converted += stringifyJSON(obj[key]);
-	  converted += ',';
-	  chop = true;
+	  if(obj[key] !== undefined && typeof(obj[key]) !== 'function'){
+	    converted += stringifyJSON(key);
+	    converted += ':';
+	    converted += stringifyJSON(obj[key]);
+	    converted += ',';
+	    chop = true;
+	  }
 	}
 	if(chop) {
 	  converted = converted.substring(0, converted.length - 1);
