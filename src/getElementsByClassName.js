@@ -5,17 +5,32 @@
 
 // But instead we're going to implement it from scratch:
 var getElementsByClassName = function(className){
-  var nodes = document.body.childNodes;
+  var first = document.body;
+  var otherNodes = first.childNodes;
   var elements = [];
   
-  for(var i = 0; i < nodes.length; i++){
-    var classes = nodes[i].classList;
-	if(classes !== undefined){
-	  if(classes.contains(className)){
-	    elements.push(nodes[i]);
+  if(first.classList.contains(className)){
+    elements.push(first);
+  }
+  
+  addNodes(otherNodes);
+  
+  function addNodes(level){
+    for(var i = 0; i < level.length; i++){
+	  var classes = level[i].classList;
+	  if(classes !== undefined){
+	    if(classes.contains(className)){
+	      elements.push(level[i]);
+	    }
+	  }
+	  
+	  if(level[i].childNodes !== undefined){
+	    if(level[i].childNodes.length > 0){
+	      addNodes(level[i].childNodes);
+	    }
 	  }
 	}
   }
-  
+	
   return elements;
 };
